@@ -1,0 +1,15 @@
+(define finalSubPosition
+  (lambda (diveDirectionsFile)
+      (let readLine ((quantity (read diveDirectionsFile)) (direction (read diveDirectionsFile)) (distance 0) (depth 0))
+        (if (eof-object? direction)
+            (display (string-append "Distance: " (number->string distance) " Depth: " (number->string depth) "\nDistance x Depth: " (number->string ( * distance depth))))
+            (case direction
+              ('forward (readLine (read diveDirectionsFile) (read diveDirectionsFile) (+ distance quantity) depth))
+              ('up (readLine (read diveDirectionsFile) (read diveDirectionsFile) distance (- depth quantity)))
+              ('down (readLine (read diveDirectionsFile) (read diveDirectionsFile) distance (+ depth quantity)))
+            )
+        )
+      )
+  )
+)
+(call-with-input-file "input.txt" finalSubPosition)
