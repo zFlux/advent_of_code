@@ -7,10 +7,15 @@ fun main() {
     val drawnNumbers = parseDrawnNumbers(inputIterator.next())
     val bingoCards = parseBingoCards(inputIterator)
 
+    findFirstWinningCard(drawnNumbers, bingoCards)
+    findLastWinningCard(drawnNumbers, bingoCards)
+}
+
+fun findFirstWinningCard(drawnNumbers: List<String>, bingoCards: List<BingoCard>) {
     var winnerIndex = -1
     var winningNumber = -1
     for (number in drawnNumbers) {
-        winnerIndex = markAndEvaluateCards(number, bingoCards)
+        winnerIndex = markAndEvaluateFirstWin(number, bingoCards)
         if (winnerIndex > -1) {
             winningNumber = number.toInt()
             break
@@ -18,13 +23,28 @@ fun main() {
     }
 
     if (winnerIndex > -1) {
-        println(bingoCards[winnerIndex].cardMap())
-        println()
-        println(bingoCards[winnerIndex].cardResult())
-        println("Card Score: " + bingoCards[winnerIndex].cardScore())
-        println("Winning Number: " + winningNumber)
-        println("Calculated Number: " + (winningNumber * bingoCards[winnerIndex].cardScore()))
+        println("First Winning Number: " + winningNumber)
+        println("Card Score: " + (winningNumber * bingoCards[winnerIndex].cardScore()))
     }
+}
+
+fun findLastWinningCard(drawnNumbers: List<String>, bingoCards: List<BingoCard>) {
+    var setOfPreviousWinners = HashSet<Int>()
+    var lastWinner = HashSet<Int>()
+    var lastWinningNumber = ""
+    for (number in drawnNumbers) {
+        val setOfWinners = markAndEvaluateAllCards(number, bingoCards, setOfPreviousWinners)
+        if (setOfWinners.size > 0 ) {
+            setOfPreviousWinners.addAll(setOfWinners)
+            println("Winning Card Indexes: " + setOfWinners + " for number: " + number)
+            lastWinner = setOfWinners
+            lastWinningNumber = number
+        }
+    }
+
+    println("Last Winning Number: " + lastWinningNumber)
+    println("Last Winning Card Indexes: " + lastWinner)
+    println("Card Score: " + (lastWinningNumber.toInt() * bingoCards[lastWinner.iterator().next()].cardScore()))
 }
 
 fun parseDrawnNumbers(input: String): List<String> { return input.split(",") }
@@ -38,13 +58,26 @@ fun parseBingoCards(inputLines: Iterator<String>): List<BingoCard> {
     return bingoCards
 }
 
-fun markAndEvaluateCards(number: String, bingoCards: List<BingoCard>): Int {
+fun markAndEvaluateFirstWin(number: String, bingoCards: List<BingoCard>): Int {
     for (i in bingoCards.indices) {
         val bingo = bingoCards[i].markAndEvaluate(number)
         if (bingo) return i
     }
     return -1
 }
+
+fun markAndEvaluateAllCards(number: String, bingoCards: List<BingoCard>, setOfPreviousWinners: HashSet<Int>): HashSet<Int> {
+    val result = HashSet<Int>()
+    for (i in bingoCards.indices) {
+        if (!setOfPreviousWinners.contains(i)) {
+            val bingo = bingoCards[i].markAndEvaluate(number)
+            if (bingo) result.add(i)
+        }
+    }
+    return result
+}
+
+
 
 
 

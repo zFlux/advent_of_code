@@ -7,17 +7,11 @@ class BingoCard(input: Iterator<String>) {
         for (row in 0..4) {
             val cardValues = input.next().trim().split("\\s+".toRegex())
             for (column in cardValues.indices) {
-
-                if (column > 4 || row > 4) {
-                    println("$column, $row")
-                    println(cardValues)
-                }
                 if (cardMap[cardValues[column]] == null) {
                     cardMap[cardValues[column]] = arrayListOf(arrayListOf(column, row))
                 } else {
                     cardMap[cardValues[column]]?.add(arrayListOf(column, row))
                 }
-
             }
         }
 
