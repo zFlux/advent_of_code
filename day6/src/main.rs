@@ -14,7 +14,7 @@ fn main() {
         sum+=1;
     }
 
-    println!("Challenge 1 - How many Lattern Fish after x Days: {:?}", sum);
+    println!("Challenge 1 - How many Lantern Fish after 256 Days: {:?}", sum);
 }
 
 fn populate_days(mut countdown: usize, day_array: &mut [u128;256]) {
