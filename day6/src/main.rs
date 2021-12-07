@@ -8,30 +8,36 @@ fn main() {
     let input_ages = first_input_line.split(",");
     let mut lantern_fishies: Vec<LanternFish> = Vec::new(); 
 
-
     for age in input_ages {
         lantern_fishies.push(LanternFish { days_till_reproduction: FromStr::from_str(age).unwrap() });
     }
-    let population_after_80_days = lantern_fishies_after_days(80, lantern_fishies);
-
+    let population_after_80_days: i64 = lantern_fishies_after_days(80, lantern_fishies);
     println!("Challenge 1 - How many Lattern Fish after 80 Days: {:?}", population_after_80_days);
 }
 
-fn lantern_fishies_after_days(days: i32, mut lantern_fishies: Vec<LanternFish>) -> usize {
+fn lantern_fishies_after_days(days: i32, lantern_fishies: Vec<LanternFish>) -> i64 {
 
-    let mut lantern_fishy_children: Vec<LanternFish> = Vec::new(); 
-    for _day in 0..days {
-        for i in 0..lantern_fishies.len() {
-            let child = lantern_fishies[i].age_by_a_day();
-      
-            if child.is_some() {
-                child.map(|c| lantern_fishy_children.push(c));
-            }
-        }
-        lantern_fishies.append(&mut lantern_fishy_children);
+    let mut fishy_sum: i64 = 0;
+    for i in 0..lantern_fishies.len() {
+        fishy_sum+= count_lantern_fish(days, lantern_fishies[i]);
+    }    
+
+    return fishy_sum;
+}
+
+fn count_lantern_fish(days: i32, mut fish: LanternFish) -> i64  {
+    if days < 1 {
+        return 1;
     }
 
-    return lantern_fishies.len();
+    if fish.days_till_reproduction == 0 {
+        fish.days_till_reproduction = 6;
+        return count_lantern_fish(days-1, fish) + count_lantern_fish(days-1, LanternFish {days_till_reproduction: 8 });
+    } 
+
+    let next_day = days - fish.days_till_reproduction;
+    fish.days_till_reproduction = 0;
+    return count_lantern_fish(next_day, fish);    
 }
 
 fn first_line_from_file(file_path: &str) -> String {
@@ -46,19 +52,4 @@ fn first_line_from_file(file_path: &str) -> String {
 #[derive(Clone, Copy, Debug)]
 struct LanternFish {
     days_till_reproduction: i32
-}
-
-trait Aging {
-    fn age_by_a_day(&mut self) -> Option<LanternFish>;
-}
-
-impl Aging for LanternFish {
-    fn age_by_a_day(&mut self) -> Option<LanternFish> {
-        self.days_till_reproduction-=1;
-        if self.days_till_reproduction == -1 {
-            self.days_till_reproduction = 6;
-            return Some(LanternFish { days_till_reproduction: 8 });
-        }
-        return None
-    }
 }
