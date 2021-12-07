@@ -1,43 +1,35 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
-use std::str::FromStr;
 
 fn main() {
     let file_path = "/home/daniel/sandbox/advent_of_code/day6/src/resources/input.txt";
     let first_input_line = first_line_from_file(&file_path);
-    let input_ages = first_input_line.split(",");
-    let mut lantern_fishies: Vec<LanternFish> = Vec::new(); 
+    let initial_countdowns = first_input_line.split(",");
 
-    for age in input_ages {
-        lantern_fishies.push(LanternFish { days_till_reproduction: FromStr::from_str(age).unwrap() });
-    }
-    let population_after_80_days: i64 = lantern_fishies_after_days(80, lantern_fishies);
-    println!("Challenge 1 - How many Lattern Fish after 80 Days: {:?}", population_after_80_days);
-}
-
-fn lantern_fishies_after_days(days: i32, lantern_fishies: Vec<LanternFish>) -> i64 {
-
-    let mut fishy_sum: i64 = 0;
-    for i in 0..lantern_fishies.len() {
-        fishy_sum+= count_lantern_fish(days, lantern_fishies[i]);
-    }    
-
-    return fishy_sum;
-}
-
-fn count_lantern_fish(days: i32, mut fish: LanternFish) -> i64  {
-    if days < 1 {
-        return 1;
+    let mut sum: u128 = 0; 
+    for countdown in initial_countdowns {
+        let mut day_array: [u128; 210] = [0;210]; 
+        populate_days(countdown.parse().unwrap(), &mut day_array);
+        sum+=day_array.iter().sum::<u128>();
+        sum+=1;
     }
 
-    if fish.days_till_reproduction == 0 {
-        fish.days_till_reproduction = 6;
-        return count_lantern_fish(days-1, fish) + count_lantern_fish(days-1, LanternFish {days_till_reproduction: 8 });
-    } 
+    println!("Challenge 1 - How many Lattern Fish after x Days: {:?}", sum);
+}
 
-    let next_day = days - fish.days_till_reproduction;
-    fish.days_till_reproduction = 0;
-    return count_lantern_fish(next_day, fish);    
+fn populate_days(mut countdown: usize, day_array: &mut [u128;210]) {
+    
+    day_array[countdown]+=1;
+    if countdown+9 < day_array.len() {
+        populate_days(countdown+9, day_array);
+    }
+    while countdown <= day_array.len()-8 {
+        countdown+=7;
+        day_array[countdown]+=1;
+        if countdown+9 < day_array.len() {
+            populate_days(countdown + 9, day_array);
+        }
+    }
 }
 
 fn first_line_from_file(file_path: &str) -> String {
@@ -47,9 +39,4 @@ fn first_line_from_file(file_path: &str) -> String {
         line = reader.lines().next().unwrap().unwrap();
     }
     return line;
-}
-
-#[derive(Clone, Copy, Debug)]
-struct LanternFish {
-    days_till_reproduction: i32
 }
