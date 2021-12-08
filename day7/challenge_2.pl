@@ -12,10 +12,10 @@ stream_line(In, Line) :-
         fail
     ).
 
-rounded_mean(List, Average ):- sum_list( List, Sum ),
+mean(List, Mean ):- sum_list( List, Sum ),
     length( List, Length ),
     Length > 0, 
-    Average is floor(Sum / Length).
+    Mean is floor(Sum / Length).
 
 sum_list([], 0).
 sum_list([H|T], Sum) :-
@@ -23,18 +23,17 @@ sum_list([H|T], Sum) :-
    Sum is H + Rest.
 
 min_position_cost([], []).
-min_position_cost(I, R) :- rounded_mean(I, Mean), cost_of_position(Mean, I, R).
+min_position_cost(I, R) :- mean(I, Mean), cost_of_position(Mean, I, R).
 
 cost_of_position(P, [], 0).
 cost_of_position(P, [P], 0).
-cost_of_position(P, [X], Cost) :- length([X], 1), length_of_move(P, X, L), cost_of_distance(L, Cost).
+cost_of_position(P, [X], Cost) :- length([X], 1), length_of_move(P, X, L), cost_of_move(L, Cost).
 cost_of_position(P, [H|T], Cost) :- cost_of_position(P, [H], Cost1), cost_of_position(P, T, Cost2), Cost is Cost1 + Cost2.
 
 length_of_move(A, A, 0).
 length_of_move(A, B, R) :- R is abs(A - B).
 
-cost_of_distance(X, R) :- R is X * (X+1) / 2 .
-
+cost_of_move(X, R) :- R is X * (X+1) / 2 .
 
 main :- file_line('input.txt', Line),
         split_string(Line, ",", "", StringList),
