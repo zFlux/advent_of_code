@@ -12,19 +12,17 @@ stream_line(In, Line) :-
         fail
     ).
 
+median(List, Median) :-
+    msort(List, SortedList),
+    middle_element(SortedList, SortedList, Median).
+
+middle_element([], [M|_], M).
+middle_element([_], [M|_], M).
+middle_element([_,_|Xs], [_|Ys], M) :-
+    middle_element(Xs, Ys, M).
+
 min_position_cost([], []).
-min_position_cost(I, []) :- length(I, 1).
-min_position_cost(I, R) :- list_of_position_costs(I, I, R1), list_min(R1, R).
-
-list_min([], Min). 
-list_min([H|T], Min) :- list_min(T, H, Min).
-list_min([], Min, Min).
-list_min([[IH,H]|T], [IMin0, Min0], Min) :-H =< Min0, list_min(T, [IH,H], Min).
-list_min([[IH,H]|T], [IMin0, Min0], Min) :-H > Min0, list_min(T, [IMin0,Min0], Min).
-
-list_of_position_costs([], [], []).
-list_of_position_costs(I, [A], [[A,AC]]) :- cost_of_position(A, I, AC).
-list_of_position_costs(I, [H|T], R) :- cost_of_position(H, I, HC), list_of_position_costs(I, T, RT), append([[H, HC]], RT, R).
+min_position_cost(I, R) :- median(I, Median), cost_of_position(Median, I, R).
 
 cost_of_position(P, [], 0).
 cost_of_position(P, [P], 0).
@@ -32,12 +30,12 @@ cost_of_position(P, [X], Cost) :- length([X], 1), cost_of_move(P, X, Cost).
 cost_of_position(P, [H|T], Cost) :- cost_of_position(P, [H], Cost1), cost_of_position(P, T, Cost2), Cost is Cost1 + Cost2.
 
 cost_of_move(A, A, 0).
-cost_of_move(A, B, R) :- atom_number(A, AN), atom_number(B, BN), R is abs(AN - BN).
+cost_of_move(A, B, R) :- R is abs(A - B).
 
-main :- file_line('input_test.txt', Line),
-        split_string(Line, ",", "", InputList),
-        list_of_position_costs(InputList, InputList, Result),
+
+main :- file_line('input.txt', Line),
+        split_string(Line, ",", "", StringList),
+        maplist(number_string, InputList, StringList),
+        min_position_cost(InputList, Result),
+        write("Challenge 1 Solution: "),
         write(Result).
-
-
-
