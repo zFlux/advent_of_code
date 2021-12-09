@@ -2,3 +2,6 @@
 *.iml
 target
 .vscode
+.image
+.changes
+pharo-local
