@@ -1,72 +1,1 @@
-PackageManifest subclass: #ManifestAdventOfCode
-	instanceVariableNames: ''
-	classVariableNames: ''
-	package: 'AdventOfCode-Manifest'!
-!ManifestAdventOfCode commentStamp: 'DanielChristo 12/8/2021 22:58' prior: 0!
-This package contains all my code related to the Day 8 challenge I'm writing in Smalltalk!
-Object subclass: #ChallengeOne
-	instanceVariableNames: ''
-	classVariableNames: 'ListOfOutputs ListOfSignalPatterns'
-	package: 'AdventOfCode-Day8'!
-!ChallengeOne commentStamp: 'DanielChristo 12/8/2021 23:30' prior: 0!
-I represent the Code Challenge itself.
-
-My job is to load the challenge input, parse it into appropriate lists of objects and then process that input.
-
-- loadInput  
-- findSolution
- 
-challengeOne := ChallengeOne new.!
-
-"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
-
-ChallengeOne class
-	instanceVariableNames: 'signalsAndOutputs'!
-
-!ChallengeOne class methodsFor: 'accessing' stamp: 'DanielChristo 12/9/2021 00:56'!
-signalsAndOutputs
-
-	^ signalsAndOutputs! !
-
-!ChallengeOne class methodsFor: 'accessing' stamp: 'DanielChristo 12/9/2021 00:56'!
-signalsAndOutputs: anObject
-
-	signalsAndOutputs := anObject! !
-
-
-!ChallengeOne class methodsFor: 'setting' stamp: 'DanielChristo 12/9/2021 01:11'!
-loadInputs: fileName
-	"load the parsed problem input into the a class variable"
-	|input lines signalAndOutput signals outputs signalAndOutputDictionary |
-			
-input := fileName asFileReference readStreamDo: [ :stream | stream upToEnd ].
-lines := input splitOn: String lf.
-
-signalsAndOutputs := lines collect: [:line | 
-		signalAndOutput := line splitOn: ' | '.
-		signals := (signalAndOutput at: 1) splitOn: ' '.
-		outputs := (signalAndOutput at: 2) splitOn: ' '.
-		signalAndOutputDictionary := Dictionary new
-			at: 'signals' put: signals;
-			at: 'output' put: outputs;
-			yourself.
-		signalAndOutputDictionary.
-	].
-! !
-
-!ChallengeOne class methodsFor: 'class modifications' stamp: 'DanielChristo 12/9/2021 09:09'!
-findSolution
-	"This loads the input values for the first challenge, processes them and returns a result"	
-			
-	| uniqueLengths matchingOutputs outputVals identifiableOutputs |
-
-	ChallengeOne loadInputs: './advent_of_code/day8/input.txt'.
-	signalsAndOutputs := ChallengeOne signalsAndOutputs.
-	uniqueLengths := #( 2 3 4 7 ) asSet.
-	matchingOutputs := signalsAndOutputs inject: 0 into: [ :identifiableOutputSize :signalAndOutput  | 
-		outputVals := signalAndOutput at: 'output'.			
-		identifiableOutputs := outputVals select: [ :anOutput | (uniqueLengths includes: (anOutput size)).].
-		identifiableOutputSize + (identifiableOutputs size).	
-	].
-	
-	^ matchingOutputs.! !
+PackageManifest subclass: #ManifestAdventOfCode	instanceVariableNames: ''	classVariableNames: ''	package: 'AdventOfCode-Manifest'!Object subclass: #Challenges	instanceVariableNames: ''	classVariableNames: 'ListOfOutputs ListOfSignalPatterns'	package: 'AdventOfCode-Day8'!"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!Challenges class	instanceVariableNames: 'signalsAndOutputs'!!Challenges class methodsFor: 'accessing'!signalsAndOutputs	^ signalsAndOutputs! !!Challenges class methodsFor: 'accessing'!signalsAndOutputs: arg1	signalsAndOutputs := arg1! !!Challenges class methodsFor: 'setting'!loadInputs: arg1	| tmp1 tmp2 tmp4 tmp5 tmp6 tmp7 |	tmp1 := arg1 asFileReference readStreamDo: [ :arg2 | arg2 upToEnd ].	tmp2 := tmp1 splitOn: String lf.	signalsAndOutputs := tmp2 collect: [ :arg3 | 		                     | tmp9 |		                     tmp4 := arg3 splitOn: ' | '.		                     tmp5 := (tmp4 at: 1) splitOn: ' '.		                     tmp6 := (tmp4 at: 2) splitOn: ' '.		                     tmp9 := Dictionary new.		                     tmp9			                     at: 'signals' put: tmp5;			                     at: 'output' put: tmp6.		                     tmp7 := tmp9 yourself.		                     tmp7 ]! !!Challenges class methodsFor: 'class modifications'!findSolutionOne	| tmp1 tmp2 tmp4 tmp5 |	Challenges loadInputs: './advent_of_code/day8/input.txt'.	signalsAndOutputs := Challenges signalsAndOutputs.	tmp1 := #( 2 3 4 7 ) asSet.	tmp2 := signalsAndOutputs inject: 0 into: [ :arg1 :arg2 | 		        tmp4 := arg2 at: 'output'.		        tmp5 := tmp4 select: [ :arg3 | tmp1 includes: arg3 size ].		        arg1 + tmp5 size ].	^ tmp2! !!Challenges class methodsFor: 'class modifications'!findSolutionTwo	| tmp1 tmp3 tmp4 tmp5 tmp6 tmp7 tmp8 tmp9 tmp10 tmp11 tmp12 tmp13 tmp14 tmp15 tmp16 tmp17 tmp18 tmp19 tmp20 tmp21 |	Challenges loadInputs: './advent_of_code/day8/input.txt'.	signalsAndOutputs := Challenges signalsAndOutputs.	tmp3 := 0.	tmp1 := signalsAndOutputs inject: 0 into: [ :arg1 :arg2 | 		        tmp4 := arg2 at: 'output'.		        tmp5 := arg2 at: 'signals'.		        tmp6 := Dictionary new.		        tmp7 := Dictionary new.		        tmp8 := OrderedCollection new.		        tmp9 := OrderedCollection new.		        tmp5 do: [ :arg3 | 			        tmp10 := Set new.			        arg3 do: [ :arg4 | tmp10 add: arg4 ].			        arg3 size = 2 ifTrue: [ 				        tmp6 at: arg3 put: 1.				        tmp7 at: 1 put: tmp10 ].			        arg3 size = 3 ifTrue: [ 				        tmp6 at: arg3 put: 7.				        tmp7 at: 7 put: tmp10 ].			        arg3 size = 4 ifTrue: [ 				        tmp6 at: arg3 put: 4.				        tmp7 at: 4 put: tmp10 ].			        arg3 size = 5 ifTrue: [ tmp8 add: tmp10 ].			        arg3 size = 6 ifTrue: [ tmp9 add: tmp10 ].			        arg3 size = 7 ifTrue: [ 				        tmp6 at: arg3 put: 8.				        tmp7 at: 8 put: tmp10 ] ].		        tmp11 := (tmp7 at: 7) difference: (tmp7 at: 4).		        tmp13 := ((tmp7 at: 8) difference: (tmp7 at: 7)) 			                 difference: (tmp7 at: 4).		        tmp15 := (tmp7 at: 4) difference: (tmp7 at: 1).		        tmp8 do: [ :arg5 | 			        tmp14 := arg5 union: (tmp7 at: 4).			        tmp14 size = 6 ifTrue: [ tmp7 at: 9 put: tmp14 ] ].		        tmp12 := (tmp7 at: 8) difference: (tmp7 at: 9).		        tmp17 := tmp13 difference: tmp12.		        tmp8 do: [ :arg6 | 			        (arg6 includesAll: tmp12) ifTrue: [ tmp7 at: 2 put: arg6 ] ].		        tmp16 := ((tmp7 at: 2) union: (tmp7 at: 1)) difference:			                 tmp12.		        tmp7 at: 3 put: tmp16.		        tmp9 do: [ :arg7 | 			        ((arg7 difference: (tmp7 at: 1)) difference: tmp12) size			        = 3 ifTrue: [ tmp7 at: 0 put: arg7 ] ].		        tmp8 do: [ :arg8 | 			        ((arg8 difference: (tmp7 at: 3)) difference: tmp12) size			        = 1 ifTrue: [ tmp7 at: 5 put: arg8 ] ].		        tmp18 := (tmp7 at: 5) union: tmp12.		        tmp7 at: 6 put: tmp18.		        tmp5 do: [ :arg9 | 			        tmp10 := Set new.			        arg9 do: [ :arg10 | tmp10 add: arg10 ].			        arg9 size = 5 ifTrue: [ 				        (tmp10 difference: (tmp7 at: 2)) size = 0 ifTrue: [ 					        tmp6 at: arg9 put: 2 ] ].			        arg9 size = 5 ifTrue: [ 				        (tmp10 difference: (tmp7 at: 3)) size = 0 ifTrue: [ 					        tmp6 at: arg9 put: 3 ] ].			        arg9 size = 5 ifTrue: [ 				        (tmp10 difference: (tmp7 at: 5)) size = 0 ifTrue: [ 					        tmp6 at: arg9 put: 5 ] ].			        arg9 size = 6 ifTrue: [ 				        (tmp10 difference: (tmp7 at: 0)) size = 0 ifTrue: [ 					        tmp6 at: arg9 put: 0 ] ].			        arg9 size = 6 ifTrue: [ 				        (tmp10 difference: (tmp7 at: 6)) size = 0 ifTrue: [ 					        tmp6 at: arg9 put: 6 ] ].			        arg9 size = 6 ifTrue: [ 				        (tmp10 difference: (tmp7 at: 9)) size = 0 ifTrue: [ 					        tmp6 at: arg9 put: 9 ] ] ].		        tmp19 := '' writeStream.		        tmp4 do: [ :arg11 | 			        tmp20 := Set new.			        arg11 do: [ :arg12 | tmp20 add: arg12 ].			        tmp20 size = (tmp7 at: 0) size			        & (tmp20 difference: (tmp7 at: 0)) size = 0 ifTrue: [ 				        tmp19 nextPut: $0 ].			        tmp20 size = (tmp7 at: 1) size			        & (tmp20 difference: (tmp7 at: 1)) size = 0 ifTrue: [ 				        tmp19 nextPut: $1 ].			        tmp20 size = (tmp7 at: 2) size			        & (tmp20 difference: (tmp7 at: 2)) size = 0 ifTrue: [ 				        tmp19 nextPut: $2 ].			        tmp20 size = (tmp7 at: 3) size			        & (tmp20 difference: (tmp7 at: 3)) size = 0 ifTrue: [ 				        tmp19 nextPut: $3 ].			        tmp20 size = (tmp7 at: 4) size			        & (tmp20 difference: (tmp7 at: 4)) size = 0 ifTrue: [ 				        tmp19 nextPut: $4 ].			        tmp20 size = (tmp7 at: 5) size			        & (tmp20 difference: (tmp7 at: 5)) size = 0 ifTrue: [ 				        tmp19 nextPut: $5 ].			        tmp20 size = (tmp7 at: 6) size			        & (tmp20 difference: (tmp7 at: 6)) size = 0 ifTrue: [ 				        tmp19 nextPut: $6 ].			        tmp20 size = (tmp7 at: 7) size			        & (tmp20 difference: (tmp7 at: 7)) size = 0 ifTrue: [ 				        tmp19 nextPut: $7 ].			        tmp20 size = (tmp7 at: 8) size			        & (tmp20 difference: (tmp7 at: 8)) size = 0 ifTrue: [ 				        tmp19 nextPut: $8 ].			        tmp20 size = (tmp7 at: 9) size			        & (tmp20 difference: (tmp7 at: 9)) size = 0 ifTrue: [ 				        tmp19 nextPut: $9 ] ].		        tmp21 := tmp19 contents asNumber.		        tmp3 := tmp3 + tmp21 ].	^ tmp3! !
