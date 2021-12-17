@@ -1,14 +1,21 @@
 defmodule Challenge1 do
-  def traverseCaves(currentCave, pathMap, result, visited) do
+  def traverseCaves(currentCave, pathMap, result, visited, visitedTwice) do
     if currentCave == "end" do
       (result <> ", " <> currentCave)
     else
-      if !MapSet.member?(visited, currentCave) do
+      if !MapSet.member?(visited, currentCave) || (MapSet.member?(visited, currentCave) && currentCave != "start" && MapSet.size(visitedTwice) == 0) do
         result =
           if currentCave != "start" do
             result <> ", " <> currentCave
           else
             result <> currentCave
+          end
+
+        visitedTwice =
+          if String.downcase(currentCave) == currentCave && currentCave != "start" && MapSet.member?(visited, currentCave) do
+            MapSet.put(visitedTwice, currentCave)
+          else
+            visitedTwice
           end
 
         visited =
@@ -18,7 +25,7 @@ defmodule Challenge1 do
             visited
           end
         for nextCave <- pathMap[currentCave] do
-          traverseCaves(nextCave, pathMap, result, visited)
+          traverseCaves(nextCave, pathMap, result, visited, visitedTwice)
         end
       end
     end
@@ -46,7 +53,7 @@ inputPathMap = "input.txt"
         |> Enum.map(createPathMaps)
         |> Enum.reduce(%{}, reducePathMaps)
 
-traversalList = Challenge1.traverseCaves("start", inputPathMap, "", MapSet.new())
+traversalList = Challenge1.traverseCaves("start", inputPathMap, "", MapSet.new(), MapSet.new())
 resultList = Enum.filter(List.flatten(traversalList), &!is_nil(&1))
 IO.inspect resultList
 IO.inspect length(resultList)
