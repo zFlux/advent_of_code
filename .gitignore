@@ -5,3 +5,5 @@ target
 *.image
 *.changes
 *pharo-local
+*.class
+*out
