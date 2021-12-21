@@ -7,3 +7,4 @@ target
 *pharo-local
 *.class
 *out
+*.cpcache
