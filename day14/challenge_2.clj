@@ -1,5 +1,5 @@
 (require '[clojure.string :as str])
-(require '[clojure.core.rrb-vector :as fv])
+(import java.util.LinkedList) 
 
 (defn parseInputLines []
   (with-open [rdr (clojure.java.io/reader "input.txt")]
@@ -13,25 +13,23 @@
   map)))
 )
 
-(defn applySeqMap [charSeq iter acc]
+(defn applySeqMap [charSeq iter]
   (if (> iter (- (count charSeq) 2))
-    (fv/catvec acc (fv/subvec charSeq iter))
-    (let [k1 (get charSeq iter) k2 (get charSeq (+ iter 1))]
-      (recur charSeq 
-              (inc iter) 
-              (fv/catvec acc (fv/vector-of :char (get charSeq iter) (get (get transformMap k1) k2) )))
+    charSeq
+    (let [k1 (.get charSeq iter) k2 (.get charSeq (+ iter 1))]
+      (.add charSeq (+ 1 iter) (get (get transformMap k1) k2))
+      (recur charSeq (+ iter 2))
     )
   )
 )
 
 (defn multiApplySeqMap [charSeq i limit]
   (if (< i limit)
-      (let [newCharSeq (applySeqMap charSeq 0 [])]
-        (recur newCharSeq (+ i 1) limit))
+      (recur (applySeqMap charSeq 0) (+ i 1) limit)
       charSeq)
 )
 
-(let [results (frequencies (apply str(multiApplySeqMap (fv/vec (seq (first inputLines))) 0 40)))]
+(let [results (frequencies (apply str(multiApplySeqMap (new java.util.LinkedList (seq (first inputLines))) 0 40)))]
   (let [sortedFrequencies
      (into (sorted-map-by 
              (fn [key1 key2]
