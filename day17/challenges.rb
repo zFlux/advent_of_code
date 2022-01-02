@@ -18,7 +18,7 @@ def test_projectile (start_x, start_y, init_vel_x, init_vel_y, range_x, range_y)
     max_y = [y, max_y].max
 
     if x > range_x.last || y < range_y.first
-      return -1
+      return false
     end
 
     if x.between?(range_x.first, range_x.last) &&  y.between?(range_y.first, range_y.last)
@@ -28,16 +28,21 @@ def test_projectile (start_x, start_y, init_vel_x, init_vel_y, range_x, range_y)
 
 end
 
-def challenge_1
+def challenges
   maxy = 0
+  distinct_results = 0
   for vy in (-500..500) do
     for vx in (1..500) do
       result = test_projectile(0,0,vx,vy, [128,160], [-142,-88])
-      maxy = [result, maxy].max
+      if result
+        maxy = [result, maxy].max
+        distinct_results+=1
+      end
     end
   end
 
-  puts "Max Y: " + maxy.to_s
+  puts "For Challenge 1 the Max Y is: " + maxy.to_s
+  puts "For Challenge 2 the number of distinct shots is: " + distinct_results.to_s
 end
 
-challenge_1
+challenges
