@@ -21,4 +21,5 @@
 
 ## 2022
 - Day 1: PL\pgSQL
+- Day 2: OCaml
 
