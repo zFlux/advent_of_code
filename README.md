@@ -23,4 +23,5 @@
 - Day 1: PL\pgSQL
 - Day 2: OCaml
 - Day 3: Javascript
+- Day 4: Haskell
 
