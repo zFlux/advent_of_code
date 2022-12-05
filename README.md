@@ -24,4 +24,5 @@
 - Day 2: OCaml
 - Day 3: Javascript
 - Day 4: Haskell
+- Day 5: Bash
 
