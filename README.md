@@ -26,4 +26,5 @@
 - Day 4: Haskell
 - Day 5: Bash
 - Day 6: C
+- Day 7: Typescript
 
