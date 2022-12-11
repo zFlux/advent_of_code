@@ -27,4 +27,6 @@
 - Day 5: Bash
 - Day 6: C
 - Day 7: Typescript
+- Day 8: Typescript
+- Day 9: Typescript
 
