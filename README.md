@@ -29,4 +29,5 @@
 - Day 7: Typescript
 - Day 8: Typescript
 - Day 9: Typescript
+- Day 10: Typescript
 
