@@ -30,4 +30,6 @@
 - Day 8: Typescript
 - Day 9: Typescript
 - Day 10: Typescript
+- Day 11: Typescript
+- Day 12: Typescript
 
