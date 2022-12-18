@@ -1,0 +1,14 @@
+{
+  "name": "typescript-node",
+  "version": "1.0.0",
+  "description": "typescript-node",
+  "main": "day12.js",
+  "scripts": {
+    "start": "ts-node day12.ts"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.2",
+    "@types/node": "^18.11.11",
+    "ts-node": "^10.4.0"
+  }
+}
