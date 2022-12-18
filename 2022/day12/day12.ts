@@ -31,19 +31,6 @@ const findPosition = (character: string): Position => {
     return { x: 0, y: 0 };
 };
 
-const startPosition: Position = findPosition('S');
-const endPosition: Position = findPosition('E');
-
-// replace startPosition with the character a and endPosition with the character z
-heightMap[startPosition.y][startPosition.x] = 'a';
-heightMap[endPosition.y][endPosition.x] = 'z';
-
-// using the startPosition as a starting point, implement a breadth first search to find the shortest
-// path to the endPosition. The path should be a list of positions that the player should move to
-// in order to reach the endPosition.
-
-
-
 const findPath = (startPosition: Position, endPosition: Position) => {
     const queue: PositionPath[] = [];
     const visited = new Set();
@@ -92,8 +79,17 @@ const findAPositions = () => {
     return aPositions;
 }
 
+
+// Main Program
+// Part 1
+const startPosition: Position = findPosition('S');
+const endPosition: Position = findPosition('E');
+heightMap[startPosition.y][startPosition.x] = 'a';
+heightMap[endPosition.y][endPosition.x] = 'z';
 const part1 = findPath(startPosition, endPosition);
 console.log(part1?.length);
+
+// Part 2
 const aPositions = findAPositions();
 const shortestPaths = aPositions.map(aPosition => 
     {
