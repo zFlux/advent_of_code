@@ -32,4 +32,6 @@
 - Day 10: Typescript
 - Day 11: Typescript
 - Day 12: Typescript
+- Day 13: Typescript
+- Day 14: Typescript
 
