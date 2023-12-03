@@ -3,10 +3,9 @@ require_relative '../lib/input_file_reader'
 
 class ChallengeOne
     class << self
-        def solution
-            input_file_path = "day1/input.txt"
-            puts "Part 1: #{solve(input_file_path, withSpelledOutNumbers = false)}"
-            puts "Part 2: #{solve(input_file_path, withSpelledOutNumbers = true)}"
+        def solutions(input_file_path)
+            [solve(input_file_path, withSpelledOutNumbers = false), 
+            solve(input_file_path, withSpelledOutNumbers = true)]
         end
 
         def solve(file_name, withSpelledOutNumbers = false)
