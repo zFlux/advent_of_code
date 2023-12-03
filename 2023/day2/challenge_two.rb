@@ -4,30 +4,48 @@ require_relative '../lib/input_file_reader'
 class ChallengeTwo
     class << self
         def solutions(input_file_path)
-            solve(input_file_path, { red: 12, green: 13, blue: 14 })
+            maximums_of_each_cube_game = ColourCubeGameParser.maximums_of_each_cube_game(input_file_path)
+            maximums_allowed = { red: 12, green: 13, blue: 14 }
+
+            part1_answer = game_indexes_under_maximums(maximums_of_each_cube_game, maximums_allowed).sum
+            part2_answer = powers_of_minimum_games(maximums_of_each_cube_game, maximums_allowed).sum
+            
+            [part1_answer, part2_answer]
         end
 
-        def solve(file_name, maximums)
-            lines = InputFileReader.read_file_to_list(file_name)
+        def powers_of_minimum_games(maximums_of_each_cube_game, maximums)
+            game_powers = []
+            maximums_of_each_cube_game.map do |cube_game_maximums|
+                game_powers << cube_game_maximums.values.reduce(:*)
+            end
+            game_powers
+        end
+
+        def game_indexes_under_maximums(maximums_of_each_cube_game, maximums)
             games_under_maximums = []
-            games_powers = []
-            lines.each_with_index.map do |line, index|
-                cube_game_maxes = parse_cube_game_maximum_values(line)
-                if game_maximums_under_maximums?(cube_game_maxes, maximums)
+            maximums_of_each_cube_game.each_with_index.map do |cube_game_maximums, index|
+                if ColourCubeGameParser.game_maximums_under_maximums?(cube_game_maximums, maximums)
                     games_under_maximums << index + 1
                 end
-                games_powers << cube_game_maxes.values.reduce(:*)
             end
-            [games_under_maximums.sum, games_powers.sum]
+            games_under_maximums
+        end
+    end
+end
+
+class ColourCubeGameParser
+    class << self
+
+        def maximums_of_each_cube_game(file_name)
+            maximums_of_each_cube_game = []
+            lines = InputFileReader.read_file_to_list(file_name)
+            lines.map do |line|
+                maximums_of_each_cube_game << maximum_values(line)
+            end
+            maximums_of_each_cube_game
         end
 
-        def game_maximums_under_maximums?(cube_game_maximums, maximums)
-            cube_game_maximums[:red] <= maximums[:red] && 
-            cube_game_maximums[:green] <= maximums[:green] && 
-            cube_game_maximums[:blue] <= maximums[:blue]
-        end
-
-        def parse_cube_game_maximum_values(line)
+        def maximum_values(line)
             max_values = {}
             game_parts = line.split(":")
             game_round_strings = game_parts[1].split(";")
@@ -39,6 +57,12 @@ class ChallengeTwo
                 end
             end
             max_values
+        end
+
+        def game_maximums_under_maximums?(cube_game_maximums, maximums)
+            cube_game_maximums[:red] <= maximums[:red] && 
+            cube_game_maximums[:green] <= maximums[:green] && 
+            cube_game_maximums[:blue] <= maximums[:blue]
         end
 
         def parse_game_round(game_round_string)
