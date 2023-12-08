@@ -218,8 +218,6 @@ class MapRange
     end
 end
 
-puts ChallengeFive.solutions('input.txt')
-
 
 
 
