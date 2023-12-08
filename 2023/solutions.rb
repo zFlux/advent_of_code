@@ -4,8 +4,9 @@ require_relative 'day3/challenge_three'
 require_relative 'day4/challenge_four'
 require_relative 'day5/challenge_five'
 require_relative 'day6/challenge_six'
+require_relative 'day7/challenge_seven'
 
-challenges = [ChallengeOne, ChallengeTwo, ChallengeThree, ChallengeFour, ChallengeFive, ChallengeSix]
+challenges = [ChallengeOne, ChallengeTwo, ChallengeThree, ChallengeFour, ChallengeFive, ChallengeSix, ChallengeSeven]
 
 challenges.each_with_index.map do |challenge, index|
     puts ""
