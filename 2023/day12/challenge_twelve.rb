@@ -5,15 +5,24 @@ class ChallengeTwelve
     class << self
         def solutions(input_file_path)
             input_list = InputFileReader.read_file_to_list(input_file_path)
-            spring_groups = []
+            part1_spring_groups = []
+            part2_spring_groups = []
             input_list.each do |line|
-                spring_groups << SpringGroup.new(line)
+                part1_spring_groups << SpringGroup.new(line)
+                part2_spring_groups << SpringGroup.new(line, true)
             end
-            spring_group_arrangements = []
-            spring_groups.each do |spring_group|
-                spring_group_arrangements << spring_group.arrangements.size
+
+            part1_arrangements = []
+            part1_spring_groups.each do |spring_group|
+                part1_arrangements << spring_group.arrangements.size
             end
-            spring_group_arrangements.sum
+            part1_arrangements.sum
+
+            part2_arrangements = []
+            part2_spring_groups.each do |spring_group|
+                part2_arrangements << spring_group.arrangements.size
+            end
+            part2_arrangements.sum
         end
     end
 end
@@ -25,10 +34,17 @@ class SpringGroup
     DAMAGED = '#'
     UNKNOWN = '?'
 
-    def initialize(input)
+    def initialize(input, unfolded = false)
+        @match_memo = {}
         split_input = input.split(' ')
         @condition_records = split_input[0]
         @contiguous_groups_of_damaged_springs = split_input[1].split(',')
+        if unfolded
+            # add five copies of the conditions to the end of the conditions
+            @condition_records += ("?" + @condition_records) * 4
+            @contiguous_groups_of_damaged_springs += @contiguous_groups_of_damaged_springs * 4
+        end
+
         @regex = ''
         # count with index
         @contiguous_groups_of_damaged_springs.each_with_index do |count, index|
@@ -53,15 +69,13 @@ class SpringGroup
             return
         end
         if @condition_records[position] == UNKNOWN
-            string_with_operational = current_string.dup
-            string_with_operational[position] = OPERATIONAL
-            string_with_damaged = current_string.dup
-            string_with_damaged[position] = DAMAGED
-            if matches_exist?(string_with_operational)
-                find_possible_arangements(string_with_operational, acc, position + 1)
+            current_string[position] = OPERATIONAL
+            if matches_exist?(current_string)
+                find_possible_arangements(current_string.dup, acc, position + 1)
             end
-            if matches_exist?(string_with_damaged)
-                find_possible_arangements(string_with_damaged, acc, position + 1)
+            current_string[position] = DAMAGED
+            if matches_exist?(current_string)
+                find_possible_arangements(current_string.dup, acc, position + 1)
             end
         else
             find_possible_arangements(current_string, acc, position + 1)
@@ -69,10 +83,12 @@ class SpringGroup
     end
 
     def matches_exist?(spring_group_string)
+        return @match_memo[spring_group_string] if @match_memo.key?(spring_group_string)
         match = spring_group_string.match(@regex)
+        @match_memo[spring_group_string] = match
         !match.nil?
     end
 
 end
 
-puts ChallengeTwelve.solutions('input.txt')
+puts ChallengeTwelve.solutions('input_test_part1.txt')
