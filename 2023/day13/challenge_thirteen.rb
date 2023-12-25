@@ -2,40 +2,37 @@ require 'byebug'
 require_relative '../lib/input_file_reader'
 
 class ChallengeThirteen
-    def solutions(input_file_path)
-        input_list = InputFileReader.read_file_to_list(input_file_path)
-        terrains = []
-        terrains_part2 = []
-        input = []
-        input_list.each_with_index do |line, index|
-            if line == ""
-                terrains << Terrain.new(input)
-                #terrains_part2 << Terrain.new(input, true)
-                input = []
-            elsif index == input_list.length - 1
-                input << line
-                terrains << Terrain.new(input)
-                #terrains_part2 << Terrain.new(input, true)
-                input = []
-            else
-                input << line
+    class << self
+        def solutions(input_file_path)
+            input_list = InputFileReader.read_file_to_list(input_file_path)
+            terrains = []
+            terrains_part2 = []
+            input = []
+            input_list.each_with_index do |line, index|
+                if line == ""
+                    terrains << Terrain.new(input)
+                    terrains_part2 << Terrain.new(input, true)
+                    input = []
+                elsif index == input_list.length - 1
+                    input << line
+                    terrains << Terrain.new(input)
+                    terrains_part2 << Terrain.new(input, true)
+                    input = []
+                else
+                    input << line
+                end
             end
+
+            # sum the reflection numbers for all terrains
+            part1 = terrains.map(&:reflection_number).sum
+            part2 = terrains_part2.map(&:reflection_number).sum
+            [part1, part2]
         end
-
-        # sum the reflection numbers for all terrains
-        part1 = terrains.map(&:reflection_number).sum
-        # terrains_part2.each do |terrain|
-        #     byebug if !terrain.smudge_fixed
-        # end
-
-        #part2 = terrains_part2.map(&:reflection_number).sum
-        #part2
-        part1
     end
 end
 
 class Terrain
-    attr_reader :rows, :columns, :reflection_row, :reflection_column, :reflection_number, :smudge_fixed
+    attr_reader :rows, :columns, :reflection_row, :reflection_column, :reflection_number
 
     ASH = '.'
     ROCK = '#'
@@ -43,7 +40,6 @@ class Terrain
     def initialize(input_list, fix_smudge = false)
         @rows = []
         @columns = []
-        @smudge_fixed = false
         input_list.each_with_index do |row, row_index|
             @rows << row
             row.each_char.with_index do |column, column_index|
@@ -61,42 +57,54 @@ class Terrain
     def number_of_lines_behind_reflection_with_smudge(array)
         check_back_num = 1
         found_reflection = false
-        @smudge_fixed = false
+        smudge_fixed = false
         lines_behind = nil
-        array.each_with_index do |line, index|
+        index = 0
+        while index < array.length
+            line = array[index]
             if index > 0
                 if found_reflection
                     check_back_num += 2
-                    if fix_smudge && !@smudge_fixed && smudge?(line, array[index - check_back_num])
-                       @smudge_fixed = true
-                    elsif line != array[index - check_back_num]
+                    # if we find the smudge somewhere in the reflection, just skip the check
+                    # and mark the smudge as fixed
+                    if !smudge_fixed && smudge?(line, array[index - check_back_num])
+                       smudge_fixed = true
+                    # Reset and keep looking if 
+                    # a) The line is not a smudge but truly unequal
+                    # b) We've reached the end of the check without finding the smudge
+                    elsif line != array[index - check_back_num] || (index - check_back_num == 0 && !smudge_fixed)
                         lines_behind = nil
                         check_back_num = 1
                         found_reflection = false
-                        @smudge_fixed = false
+                        smudge_fixed = false
                     end
-                    if index - check_back_num == 0 && (!fix_smudge || (fix_smudge && @smudge_fixed))
+                    # if we've reached the end of the check with the smudge fixed then we're done
+                    if index - check_back_num == 0 && smudge_fixed
                         break
                     end
-                    if index - check_back_num == 0 && fix_smudge && !@smudge_fixed
-                        lines_behind = nil
-                        check_back_num = 1
-                        found_reflection = false
-                        @smudge_fixed = false
-                    end
                 end
-                if fix_smudge && !@smudge_fixed && !found_reflection && smudge?(line, array[index - check_back_num])
+                # if we haven't found the reflection yet look for a smudged pair of lines
+                if !smudge_fixed && !found_reflection && smudge?(line, array[index - check_back_num])
                     found_reflection = true
                     lines_behind = index
-                    @smudge_fixed = true
+                    smudge_fixed = true
                     break if index == 1
                 end
-                if line == array[index - check_back_num] && !found_reflection
+                # if we haven't found the reflection yet look for a pair of lines that are equal
+                # except at the start or end of array since there will be no smudge found
+                if line == array[index - check_back_num] && !found_reflection && index != 1 && index != array.length - 1
                     found_reflection = true
                     lines_behind = index
-                    break if index == 1
+                end
+
+                if line == array[index - check_back_num] && found_reflection && !smudge_fixed && index == array.length - 1
+                    found_reflection = false
+                    index = lines_behind  + 1
+                    check_back_num = 1
+                    lines_behind = nil
                 end
             end
+            index += 1
         end
         lines_behind
     end
@@ -144,6 +152,3 @@ class Terrain
         lines_behind
     end
 end
-
-challenge_thirteen = ChallengeThirteen.new
-puts challenge_thirteen.solutions('input.txt')
