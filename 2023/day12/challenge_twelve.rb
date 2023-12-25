@@ -2,23 +2,24 @@ require 'byebug'
 require_relative '../lib/input_file_reader'
 
 class ChallengeTwelve
-    def solutions(input_file_path)
-        input_list = InputFileReader.read_file_to_list(input_file_path)
-        part1_possibility_counts = []
-        input_list.each do |line|
-            part1_spring_group = SpringGroup.new(line, true)
-            part1_arrangements = part1_spring_group.count_possible_arrangements
-            puts part1_arrangements
-            part1_possibility_counts << part1_arrangements
+    class << self
+        def solutions(input_file_path)
+            input_list = InputFileReader.read_file_to_list(input_file_path)
+            # part1_possibility_counts = []
+            # input_list.each do |line|
+            #     part1_spring_group = SpringGroup.new(line, true)
+            #     part1_arrangements = part1_spring_group.count_possible_arrangements
+            #     part1_possibility_counts << part1_arrangements
+            # end
+
+            [0, 0]
+
+            # part2_arrangements = []
+            # part2_spring_groups.each do |spring_group|
+            #     part2_arrangements << spring_group.arrangements.size
+            # end
+            # part2_arrangements.sum
         end
-
-        part1_possibility_counts.sum
-
-    #     # part2_arrangements = []
-    #     # part2_spring_groups.each do |spring_group|
-    #     #     part2_arrangements << spring_group.arrangements.size
-    #     # end
-    #     # part2_arrangements.sum
     end
 end
 
@@ -59,7 +60,6 @@ class SpringGroup
         end
 
         if level == @condition_records.length && damaged_group_index >= @contiguous_groups_of_damaged_springs.length - 1 && (@contiguous_groups_of_damaged_springs[damaged_group_index].nil? || damaged_counter >= @contiguous_groups_of_damaged_springs[damaged_group_index])
-            puts possibility_node.to_s
             return 1
         else
             if @condition_records[level] == OPERATIONAL && can_add_operational?(level, damaged_group_index, damaged_counter)
@@ -148,6 +148,3 @@ class PossibilityNode
         end
     end
 end
-
-# challenge_twelve = ChallengeTwelve.new
-# puts challenge_twelve.solutions('input.txt')
