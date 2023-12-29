@@ -145,6 +145,31 @@ class ChallengeTwelve_Objects < Minitest::Test
         assert_equal 6, spring_group.count_of_possibilities
     end
 
+    def test_find_counts_11
+        input = "#?????????#???? 1,3,2,2"
+        # #?????????#????
+        # #.###.##.##....
+        # #.###.##..##...
+        # #.###..##.##...
+        # #.###....##.##.
+        # #.###....##..##
+        # #.###.....##.##
+        # #..###.##.##...
+        # #..###...##.##.
+        # #..###...##..##
+        # #..###....##.##
+        # #...###..##.##.
+        # #...###..##..##
+        # #...###...##.##
+        # #....###.##.##.
+        # #....###.##..##
+        # #....###..##.##
+        # #.....###.##.##
+        spring_group = SpringGroup.new(input)
+        byebug
+        assert_equal 17, spring_group.count_of_possibilities
+    end
+
     # Unfolded tests
 
     def test_find_counts_unfolded_1
