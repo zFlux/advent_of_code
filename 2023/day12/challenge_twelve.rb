@@ -6,21 +6,22 @@ class ChallengeTwelve
         def solutions(input_file_path)
             input_list = InputFileReader.read_file_to_list(input_file_path)
             spring_groups_part1 = []
-            #spring_groups_part2 = []
+            spring_groups_part2 = []
+            all_spring_groups_part1 = []
             input_list.each do |line|
                 spring_group_part1 = SpringGroup.new(line)
-               # spring_group_part2 = SpringGroup.new(line, true)
-                spring_groups_part1 << spring_group_part1.count_of_possibilities
-               # spring_groups_part2 << spring_group_part2.count_of_possibilities
+                spring_group_part2 = SpringGroup.new(line, true)
+                spring_groups_part1 << spring_group_part1.possible_combinations
+                spring_groups_part2 << spring_group_part2.possible_combinations
+                all_spring_groups_part1 << spring_group_part1
             end
-            #byebug
-            [spring_groups_part1.sum, 0]
+            [spring_groups_part1.sum, spring_groups_part2.sum]
         end
     end
 end
 
 class SpringGroup
-    attr_reader :condition_records, :count_records, :group_start_positions, :counts, :count_of_possibilities
+    attr_reader :condition_records, :group_records, :counts
 
     OPERATIONAL = '.'
     DAMAGED = '#'
@@ -29,104 +30,64 @@ class SpringGroup
     def initialize(input, unfolded = false)
         split_input = input.split(' ')
         @condition_records = split_input[0]
-        @count_records = split_input[1].split(',')
-        @count_records.map!(&:to_i)
+        @group_records = split_input[1].split(',')
+        @group_records.map!(&:to_i)
         if unfolded
             @condition_records += ("?" + @condition_records) * 4
-            @count_records += @count_records * 4
+            @group_records += @group_records * 4
         end
-        @group_start_positions = []
-        @acc = []
         @counts = {}
-        find_first_group_positions
-        @group_start_positions = @acc.reverse
-        @count_of_possibilities = @counts[0].values.sum
-        # sum the counts of the first group
-
     end
 
-    def find_first_group_positions(search_index = 0, group_index = 0)
-        if group_index >= @count_records.length
-            return condition_records_above_are_not_damaged?(search_index)
+    # How this will work:
+    # 1. If the group is going to pass a damaged location or the group reaches its farthest possible point - i.e. 
+    #    the group is at the end of the condition records minus the minimum space required to fit all remaining groups
+    #    then there's nothing to count so return 0
+    # 2. Starting with the first group, check if the group fits at the start location of the condition records
+    #    a. if the group fits and there are no other groups (check for any remaining #'s) then add 1 to a count
+    #    b. if the group fits and there is another group after it , then set the count equal to the recursive result of counting 
+    #       possibilities for the next group starting at the first possible position for the next group 
+    #       (instead of the start location)
+    # 3. Regardless of whether the current group fits or has possibilities at current location, add to count
+    #    the recursive result of counting possibilities for the current group starting at the next location
+    # 4. At the end of the recursive call store the count in a cache
+    # 5. At the beginning of the recursive call check the cache for the count and return it if it exists
+
+    
+    def possible_combinations(search_index = 0, group_index = 0)
+
+        group_size = @group_records[group_index]
+        if (search_index > 0 && @condition_records[search_index - 1] == DAMAGED) || 
+            search_index + group_size + min_space_required_for(group_index + 1) >= @condition_records.size
+            return 0
         end
 
-        if search_index >= @condition_records.length && group_index < @count_records.length
-            return false
+        if @counts["#{group_index},#{search_index}"]
+            return @counts["#{group_index},#{search_index}"]
         end
 
-        group_size = @count_records[group_index]
-        slice_to_check = @condition_records[search_index..(search_index + group_size)]
-        #puts "Group Index: #{group_index} Group Size: #{group_size} Slice to check: #{slice_to_check} can contain group: #{can_contain_group(slice_to_check, group_size)}"
-
-        # if this slice can contain the current group
-        if can_contain_group(slice_to_check, group_size)
-            # and the subsequent groups can be found in the remaining string
-            if find_first_group_positions(search_index + group_size + 1, group_index + 1)
-                # then we've found a valid group
-                @acc << search_index
-
-                # Figuring out the counts starts here
-
-                # if we are on the last group then mark a count of 1 in any location that can fit that group
-                # beyond the search index
-                if group_index == @count_records.length - 1
-                    search_index.upto(@condition_records.length - group_size) do |index|
-                        if index > 0 && condition_records[index - 1] == DAMAGED
-                            break
-                        end
-                        if can_contain_group(@condition_records[index..(index + group_size)], group_size)
-                            @counts[group_index] ||= {}
-                            @counts[group_index][index] = 1
-                        end
-                    end
-                else
-                    # otherwise sum the counts of the prior group where the indexes come after the end of where
-                    # the current group ends. i.e. if the current group ends at index 7, then sum the counts from 
-                    # index 8 to the end of the string. If the current group ends at index 8, then sum the counts
-                    # from index 9 to the end of the string etc.
-                    #
-                    # The loop of on the current group starts at search index and ends at the position before the
-                    # last possible group position of the previous group (i.e. the last possible group position of
-                    # the previous group is the end of the string minus the size of the previous group minus 1)
-
-                   # byebug if group_index == 0
-                    # get the last index of the previous group from @counts
-                    last_index_of_previous_group = @counts[group_index + 1].keys.max
-                    search_index.upto(last_index_of_previous_group) do |index|
-                        if index > 0 && condition_records[index - 1] == DAMAGED
-                            break
-                        end
-                        if can_contain_group(@condition_records[index..(index + group_size)], group_size)
-                            #sum the counts of the prior group as long as the index is after the current index + group size
-                            @counts[group_index + 1].each do |key, value|
-                                if key >= index + group_size + 1
-                                    @counts[group_index] ||= {}
-                                    @counts[group_index][index] = @counts[group_index][index].to_i + value
-                                end
-                            end
-                            
-                        end
-                    end
-
-                    # Figuring out the counts ends here
-                end
-
-                return true
-            elsif @condition_records[search_index] == UNKNOWN || @condition_records[search_index] == OPERATIONAL
-                find_first_group_positions(search_index + 1, group_index)
+        count = 0
+        group_size = @group_records[group_index]
+        if can_contain_group(@condition_records[search_index..(search_index + group_size)], group_size)
+            if group_index == @group_records.size - 1
+                remaining_condition_records = @condition_records[(search_index + group_size)..-1]
+                count += 1 if remaining_condition_records.nil? || remaining_condition_records.index(DAMAGED).nil?
             else
-                false
+                count = possible_combinations(search_index + group_size + 1, group_index + 1)
             end
-        # if we're not moving past a damaged section
-        elsif @condition_records[search_index] == UNKNOWN || @condition_records[search_index] == OPERATIONAL
-            find_first_group_positions(search_index + 1, group_index)
-        else
-            false
         end
+
+        count += possible_combinations(search_index + 1, group_index)
+        @counts["#{group_index},#{search_index}"] = count
+        count
     end
 
-    def condition_records_above_are_not_damaged?(index)
-        !@condition_records[index..-1] || @condition_records[index..-1].split('').all? { |char| char == UNKNOWN || char == OPERATIONAL }
+    def min_space_required_for(group_index)
+        space = 0
+        group_index.upto(@group_records.size - 1) do |index|
+            space += @group_records[index] + 1
+        end
+        space - 1
     end
 
     def can_contain_group(string, group_size)
@@ -138,5 +99,3 @@ class SpringGroup
         string[group_size] != DAMAGED
     end
 end
-
-puts ChallengeTwelve.solutions('input.txt')
