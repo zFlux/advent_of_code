@@ -29,5 +29,5 @@
 - Day 7 - 14: Typescript
 
 ## 2023
-- Day 1 - 17: Ruby
+- Day 1 - 18: Ruby
 
