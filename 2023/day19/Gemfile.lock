@@ -1,0 +1,21 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    byebug (11.1.3)
+    fast_interval_tree (0.2.2)
+    minitest (5.20.0)
+    multi_range (2.2.3)
+      fast_interval_tree (~> 0.2.0)
+      roulette-wheel-selection (~> 1.1.1)
+    roulette-wheel-selection (1.1.1)
+
+PLATFORMS
+  arm64-darwin-22
+
+DEPENDENCIES
+  byebug
+  minitest
+  multi_range
+
+BUNDLED WITH
+   2.4.14
