@@ -1,7 +1,7 @@
 import * as AOC_Challenges from '../challenges/challenges';
 import * as AOC_Challenge_Examples from '../challenges/challenge_examples';
 import { Challenge } from '../types/challenge_types';
-import { parseFirstLine, parseInput } from '../util/input_parser';
+import { parseFirstLine, parseInput } from '../utils/input_parser';
 
 // make a list of functions for every function in a namespace
 let examples_only: boolean = false;
