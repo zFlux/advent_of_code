@@ -1,5 +1,13 @@
-export const map_element_i_in_each_list_to_new_list = (i: number, list: number[][]): number[] => {
+export const map_ith_elements_to_new_list = (i: number, list: number[][]): number[] => {
     return list.map((_, index) => list[index][i]);
+}
+
+export const sum_absolute_differences = (list_1: number[], list_2: number[]): number => {
+    let sum = 0;
+    for (let i = 0; i < list_1.length; i++) {
+        sum += Math.abs(list_1[i] - list_2[i]);
+    }
+    return sum;
 }
 
 export const frequency_map = (list: number[]): Map<number, number> => {
