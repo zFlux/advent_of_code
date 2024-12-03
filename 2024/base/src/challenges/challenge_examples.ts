@@ -28,3 +28,21 @@ export const challenge_1_2_example: Challenge = {
     challenge_solver: Solvers.challenge_1_2,
     expected_output: 31
 };
+
+export const challenge_2_example: Challenge = {
+    input_file_name: '2_example.input.txt',
+    description: "Example Day 2 Challenge: Check that the lists validate as 'safe'",
+    input_parser: Parsers.challenge_2,
+    first_line_parsed: [7, 6, 4, 2, 1],
+    challenge_solver: Solvers.challenge_2,
+    expected_output: 2
+};
+
+export const challenge_2_2_example: Challenge = {
+    input_file_name: '2_example.input.txt',
+    description: "Example Day 2 Part 2 Challenge: Check that the lists validate as 'safe' with a bit more effort",
+    input_parser: Parsers.challenge_2,
+    first_line_parsed: [7, 6, 4, 2, 1],
+    challenge_solver: Solvers.challenge_2_2,
+    expected_output: 4
+};
