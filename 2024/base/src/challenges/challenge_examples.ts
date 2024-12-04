@@ -46,3 +46,21 @@ export const challenge_2_2_example: Challenge = {
     challenge_solver: Solvers.challenge_2_2,
     expected_output: 4
 };
+
+export const challenge_3_example: Challenge = {
+    input_file_name: '3_example.input.txt',
+    description: "Example Day 3 Challenge: parse a string with instructions in it and execute the instructions",
+    input_parser: Parsers.challenge_3,
+    first_line_parsed: ["mul(2,4)", "mul(5,5)", "mul(11,8)", "mul(8,5)"],
+    challenge_solver: Solvers.challenge_3,
+    expected_output: 161
+};
+
+export const challenge_3_2_example: Challenge = {
+    input_file_name: '3_2_example.input.txt',
+    description: "Example Day 3 Part 2 Challenge: parse a string with instructions in it and execute the instructions with 'do()'",
+    input_parser: Parsers.challenge_3_2,
+    first_line_parsed: ["mul(2,4)", "don't()", "mul(5,5)", "mul(11,8)", "do()", "mul(8,5)"],
+    challenge_solver: Solvers.challenge_3_2,
+    expected_output: 48
+};
