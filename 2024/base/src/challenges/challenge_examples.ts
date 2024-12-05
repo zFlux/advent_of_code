@@ -64,3 +64,21 @@ export const challenge_3_2_example: Challenge = {
     challenge_solver: Solvers.challenge_3_2,
     expected_output: 48
 };
+
+export const challenge_4_example: Challenge = {
+    input_file_name: '4_example.input.txt',
+    description: "Example Day 4 Challenge: find the word xmas in any direction in a grid",
+    input_parser: Parsers.challenge_4,
+    first_line_parsed: ["M", "M", "M", "S", "X", "X", "M", "A", "S", "M"],
+    challenge_solver: Solvers.challenge_4,
+    expected_output: 18
+};
+
+export const challenge_4_2_example: Challenge = {
+    input_file_name: '4_example.input.txt',
+    description: "Example Day 4 Part 2 Challenge: count the occurances of the word mas in an x anywhere in a grid",
+    input_parser: Parsers.challenge_4,
+    first_line_parsed: ["M", "M", "M", "S", "X", "X", "M", "A", "S", "M"],
+    challenge_solver: Solvers.challenge_4_2,
+    expected_output: 9
+};
