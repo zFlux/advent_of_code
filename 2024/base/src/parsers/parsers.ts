@@ -22,6 +22,10 @@ export const challenge_3_2 = (line: string): RegExpMatchArray | null  => {
     return result
 }
 
+export const challenge_4 = (line: string): string[] => {
+    return line.split('');
+}
+
 const parse_into_array_of_numbers = (line: string): number[] => {
     return line.split(/\s+/).map((num: string) => parseInt(num));
 }
