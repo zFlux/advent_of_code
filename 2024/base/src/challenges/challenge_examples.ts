@@ -82,3 +82,21 @@ export const challenge_4_2_example: Challenge = {
     challenge_solver: Solvers.challenge_4_2,
     expected_output: 9
 };
+
+export const challenge_5_example: Challenge = {
+    input_file_name: '5_example.input.txt',
+    description: "Example Day 5 Challenge: use rules to determine the correctness of a set of instructions and sum the middle numbers of the correct ones",
+    input_parser: Parsers.challenge_5,
+    first_line_parsed: [47, 53],
+    challenge_solver: Solvers.challenge_5,
+    expected_output: 143
+};
+
+export const challenge_5_2_example: Challenge = {
+    input_file_name: '5_example.input.txt',
+    description: "Example Day 5 Part 2 Challenge: use rules to determine the incorrectness of a set of instructions and sum the middle numbers of the incorrect ones",
+    input_parser: Parsers.challenge_5,
+    first_line_parsed: [47, 53],
+    challenge_solver: Solvers.challenge_5_2,
+    expected_output: 123
+};

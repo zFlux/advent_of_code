@@ -1,3 +1,4 @@
+import { endianness } from "os";
 
 export const example = (line: string): number[] => {
     return parse_into_array_of_numbers(line);
@@ -24,6 +25,19 @@ export const challenge_3_2 = (line: string): RegExpMatchArray | null  => {
 
 export const challenge_4 = (line: string): string[] => {
     return line.split('');
+}
+
+export const challenge_5 = (line: string): number[] | string => {
+    // check if the line is of the form ##|## and split it into an array of numbers
+    if (line.match(/\d{2}\|\d{2}/)) {
+        return line.split('|').map((num: string) => parseInt(num));
+    }
+    // check if the line is of any number of numbers separated by commas and split it into an array of numbers
+    else if (line.match(/\d+(,\d+)+/)) {
+        return line.split(',').map((num: string) => parseInt(num));
+    } else {
+        return 'End';
+    }
 }
 
 const parse_into_array_of_numbers = (line: string): number[] => {

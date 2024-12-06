@@ -194,6 +194,128 @@ export const challenge_4_2 = (grid: string[][]): number => {
 }
 
 
+type RulesOrPageOrders = (number[] | string)[];
+type RulesMap = { [key: number]: number[] };
+
+export const challenge_5 = (rules_or_page_orders: RulesOrPageOrders): number => {
+    let [rules, page_orders] = parse_rules_and_page_orders(rules_or_page_orders);
+
+    let middle_sum = 0;
+    for (let page_order of page_orders) {
+        let rules_map = create_rules_map(rules, page_order);
+        let position_map = createPositionMap(topologicalSort(rules_map));
+        if (isValidList(page_order, position_map)) {
+            let middle_index = Math.floor(page_order.length / 2);
+            middle_sum += page_order[middle_index];
+        }
+    }
+    return middle_sum;
+}
+
+export const challenge_5_2 = (rules_or_page_orders: RulesOrPageOrders): number => {
+    let [rules, page_orders] = parse_rules_and_page_orders(rules_or_page_orders);
+
+    let middle_sum = 0;
+    for (let page_order of page_orders) {
+        let rules_map = create_rules_map(rules, page_order);
+        let sorted_rules = topologicalSort(rules_map);
+        let position_map = createPositionMap(sorted_rules);
+        if (!isValidList(page_order, position_map)) {
+            let middle_index = Math.floor(page_order.length / 2);
+            middle_sum += sorted_rules[middle_index];
+        }
+    }
+    return middle_sum;
+}
+
+function isValidList(list: number[], positionMap: Map<number, number>): boolean {
+    for (let i = 1; i < list.length; i++) {
+        let position_1 = positionMap.get(list[i - 1]);
+        let position_2 = positionMap.get(list[i]);
+        if (position_1 !== undefined && position_2 !== undefined && position_1 > position_2) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function createPositionMap(list: number[]): Map<number, number> {
+    let positionMap = new Map<number, number>();
+    for (let i = 0; i < list.length; i++) {
+        positionMap.set(list[i], i);
+    }
+    return positionMap;
+}
+
+function topologicalSort(graph: RulesMap): number[] {
+    const visited = new Set<number>();
+    const stack: number[] = [];
+    const inProgress = new Set<number>();
+
+    function dfs(node: number): void {
+        if (inProgress.has(node)) {
+            throw new Error("The graph is not a DAG (contains a cycle)");
+        }
+        if (visited.has(node)) return;
+
+        inProgress.add(node);
+        visited.add(node);
+
+        for (const neighbor of graph[node] || []) {
+            dfs(neighbor);
+        }
+
+        inProgress.delete(node);
+        stack.push(node);
+    }
+
+    // Ensure all nodes are visited
+    for (const node in graph) {
+        if (!visited.has(+node)) {
+            dfs(+node);
+        }
+    }
+    return stack.reverse();
+}
+
+const create_rules_map = (rules: number[][], page_order: number[]): RulesMap => {
+
+    // convert the page order into a set
+    let page_order_set = new Set(page_order);
+
+    let rules_map: RulesMap = {};
+    for (let rule of rules) {
+        if (page_order_set.has(rule[0])) {
+            if (rules_map[rule[0]] === undefined) {
+                rules_map[rule[0]] = []
+            }
+            if(page_order_set.has(rule[1])) {
+                rules_map[rule[0]].push(rule[1]);
+            }
+        }
+    }
+    return rules_map;
+}
+
+const parse_rules_and_page_orders = (rules_or_page_orders: RulesOrPageOrders): number[][][] => {
+    let rules = [];
+    while (true) {
+        let rule = rules_or_page_orders.shift();
+        if (rule === "End") {
+            break;
+        }
+        rules.push(rule as number[]);
+    }
+
+    let page_orders = [];
+    while (rules_or_page_orders.length > 0) {
+        let page_order = rules_or_page_orders.shift();
+        page_orders.push(page_order as number[]);
+    }
+
+    return [rules, page_orders]
+}
+
 
 
    
