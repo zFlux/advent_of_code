@@ -164,10 +164,6 @@ export const challenge_6 = (grid: string[][]): number | string => {
 }
 
 export const challenge_6_2 = (grid: string[][]): number => {
-    // loop through each position in the grid.
-    // if the position is a '.' replace it with an '#' and
-    // see if it causes a cycle. If it does, then count it.
-    // as a valid "obstruction" position
     let obstruction_count = 0;
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[i].length; j++) {
@@ -183,4 +179,79 @@ export const challenge_6_2 = (grid: string[][]): number => {
 
     return obstruction_count;
 }
+
+export const challenge_7 = (list: (number | number[])[][]): number => {
+
+    let sum = 0;
+    for (let equation of list) {
+        // iterate through equation - the first value is the result
+        // and the second value is a list of values to operate on
+        let target = equation[0] as number;
+        let operands = equation[1] as number[];
+
+        if (canProduceValue(target, operands, ['+', '*'])) {
+            sum += target;
+        }
+    }
+
+    return sum;
+}
+
+export const challenge_7_2 = (list: (number | number[])[][]): number => {
+    let sum = 0;
+    for (let equation of list) {
+        let target = equation[0] as number;
+        let operands = equation[1] as number[];
+
+        if (canProduceValue(target, operands, ['+', '*', '||'])) {
+            sum += target;
+        }
+    }
+
+    return sum;
+}
+
+const canProduceValue = (target: number, operands: number[], operations: string[]): boolean => {
+    const memo: Map<string, boolean> = new Map();
+  
+    function dfs(index: number, currentValue: number): boolean {
+      // Base case: reached the end of operands
+      if (index === operands.length) {
+        return currentValue === target;
+      }
+  
+      // Memoization key
+      const key = `${index},${currentValue}`;
+  
+      // Check if we've already computed this subproblem
+      if (memo.has(key)) {
+        return memo.get(key) as boolean;
+      }
+  
+      // Try all operations given
+      let add = false;
+      let mult = false;
+      let concat = false;
+
+      for (let operation of operations) {
+        if (operation === '+') {
+          add = dfs(index + 1, currentValue + operands[index]);
+        } else if (operation === '*') {
+          mult = dfs(index + 1, currentValue * operands[index]);
+        } else if (operation === '||') {
+          concat = dfs(index + 1, parseInt(`${currentValue}${operands[index]}`));
+        }
+      }
+  
+      // Store result in memo and return
+      const result = add || mult || concat;
+      memo.set(key, result);
+      return result;
+    }
+  
+    // Start DFS from the first operand
+    return dfs(1, operands[0]);
+  }
+  
+
 

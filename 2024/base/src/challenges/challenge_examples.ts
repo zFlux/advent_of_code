@@ -118,3 +118,21 @@ export const challenge_6_2_example: Challenge = {
     challenge_solver: Solvers.challenge_6_2,
     expected_output: 6
 };
+
+export const challenge_7_example: Challenge = {
+    input_file_name: '7_example.input.txt',
+    description: "Example Day 7 Challenge: check if the result can be a result of a calculation with the given numbers",
+    input_parser: Parsers.challenge_7,
+    first_line_parsed: [190, [10, 19]],
+    challenge_solver: Solvers.challenge_7,
+    expected_output: 3749
+};
+
+export const challenge_7_2_example: Challenge = {
+    input_file_name: '7_example.input.txt',
+    description: "Example Day 7 Part 2 Challenge: same as before only adds a new concatenation rule ||",
+    input_parser: Parsers.challenge_7,
+    first_line_parsed: [190, [10, 19]],
+    challenge_solver: Solvers.challenge_7_2,
+    expected_output: 11387
+};

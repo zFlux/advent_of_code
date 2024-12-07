@@ -1,3 +1,7 @@
+const parse_into_array_of_numbers = (line: string): number[] => {
+    return line.split(/\s+/).map((num: string) => parseInt(num));
+}
+
 export const example = (line: string): number[] => {
     return parse_into_array_of_numbers(line);
 }
@@ -42,6 +46,12 @@ export const challenge_6 = (line: string): string[]  => {
     return line.split('');
 }
 
-const parse_into_array_of_numbers = (line: string): number[] => {
-    return line.split(/\s+/).map((num: string) => parseInt(num));
+export const challenge_7 = (line: string): (number | number[])[] => {
+    // parse a line that looks like this 3267: 81 40 27
+    // where the first number is a single value and the rest are an array of numbers
+    let parts = line.split(': ');
+    let first = parseInt(parts[0]);
+    let rest = parts[1].split(/\s+/).map((num: string) => parseInt(num));
+    return [first, rest];
 }
+
