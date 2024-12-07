@@ -1,13 +1,5 @@
-import {
-    map_ith_elements_to_new_list,
-    sum_absolute_differences,
-    frequency_map,
-    multiply_by_frequency_and_sum,
-    sub_lists,
-    check_list,
-    is_safe,
-    abs_diff_between_1_and_3,
-} from '../utils/utils';
+import { map_ith_elements_to_new_list, sum_absolute_differences, frequency_map, multiply_by_frequency_and_sum } from '../../utils/day_1';
+import { sub_lists, check_list, is_safe, abs_diff_between_1_and_3, } from '../../utils/day_2';
 
 describe('map_ith_elements_to_new_list', () => {
     it('should map the i-th elements of each subarray to a new list', () => {

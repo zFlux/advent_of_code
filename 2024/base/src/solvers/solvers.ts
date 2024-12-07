@@ -1,4 +1,7 @@
-import { check_x_mas, check_xmas_all_directions, map_ith_elements_to_new_list, sum_absolute_differences, frequency_map, multiply_by_frequency_and_sum, check_list, sub_lists, parse_rules_and_page_orders, create_rules_map, createPositionMap, topologicalSort, isValidList } from '../utils/utils';
+import { map_ith_elements_to_new_list, sum_absolute_differences, frequency_map, multiply_by_frequency_and_sum } from '../utils/day_1';
+import { sub_lists, check_list } from '../utils/day_2';
+import { check_x_mas, check_xmas_all_directions } from '../utils/day_4';
+import { parse_rules_and_page_orders, create_rules_map, createPositionMap, topologicalSort, isValidList } from '../utils/day_5';
 
 export const example = (input: number[][]): number => {
     return input[0][0] + input[0][1];
@@ -141,6 +144,114 @@ export const challenge_5_2 = (rules_or_page_orders: RulesOrPageOrders): number =
     return middle_sum;
 }
 
+export const challenge_6 = (grid: string[][]): number | string => {
+    let start = find_the_start_position(grid);
+    let visited_positions = new Set<string>();
+    if (!start) return 0;
+    let [i, j, direction] = start;
+    visited_positions.add(`${i},${j}`);
+    
+    let nextPosition = getNextPosition(grid, [i, j, direction]);
 
+    while (nextPosition) {
+        [i, j, direction] = nextPosition;
+        visited_positions.add(`${i},${j}`);
+        nextPosition = getNextPosition(grid, [i, j, direction]);
+    }
 
-   
+    return visited_positions.size;
+}
+
+export const challenge_6_2 = (grid: string[][]): number => {
+    // loop through each position in the grid.
+    // if the position is a '.' replace it with an '#' and
+    // see if it causes a cycle. If it does, then count it.
+    // as a valid "obstruction" position
+    let obstruction_count = 0;
+    for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[i].length; j++) {
+            if (grid[i][j] === '.') {
+                grid[i][j] = '#';
+                if (hasCycle(grid)) {
+                    obstruction_count += 1;
+                }
+                grid[i][j] = '.';
+            }
+        }
+    }
+
+    return obstruction_count;
+}
+
+// Floyd's cycle-finding algorithm
+const hasCycle = (grid: string[][]): boolean => {
+    let slow = find_the_start_position(grid);
+    let fast = find_the_start_position(grid);
+
+    while (slow && fast) {
+        slow = getNextPosition(grid, slow);
+
+        // fast moves twice as fast as slow
+        fast = getNextPosition(grid, fast);
+        if (!fast) break;
+        fast = getNextPosition(grid, fast);
+
+        // if the positions are the same, then there is a cycle according to floyds alogo
+        if (slow && fast && slow[0] === fast[0] && slow[1] === fast[1] && slow[2] === fast[2]) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+const getNextPosition = (grid: string[][], position: [number, number, string]): [number, number, string] | null => {
+    let [i, j, direction] = position;
+
+    if (direction === '^' && i - 1 >= 0) {
+        if (grid[i - 1][j] !== '#') {
+            return [i - 1, j, '^'];
+        } else {
+            return [i, j, '>'];
+        }
+    } else if (direction === '>' && j + 1 < grid[i].length) {
+        if (grid[i][j + 1] !== '#') {
+            return [i, j + 1, '>'];
+        } else {
+            return [i, j, 'v'];
+        }
+    } else if (direction === 'v' && i + 1 < grid.length) {
+        if (grid[i + 1][j] !== '#') {
+            return [i + 1, j, 'v'];
+        } else {
+            return [i, j, '<'];
+        }
+    } else if (direction === '<' && j - 1 >= 0) {
+        if (grid[i][j - 1] !== '#') {
+            return [i, j - 1, '<'];
+        } else {
+            return [i, j, '^'];
+        }
+    }
+
+    return null;
+}
+
+const print_grid = (grid: string[][]): void => {
+    // build the grid as a formatted string
+    let grid_str = '';
+    for (let i = 0; i < grid.length; i++) {
+        grid_str += grid[i].join('') + '\n';
+    }
+}    
+
+const find_the_start_position = (grid: string[][]): [number, number, string] | null => {
+    for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[i].length; j++) {
+            if (grid[i][j] === '^') {
+                return [i, j, '^'];
+            }
+        }
+    }
+    return null;
+}

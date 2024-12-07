@@ -91,3 +91,21 @@ export const challenge_5_2: Challenge = {
     challenge_solver: Solvers.challenge_5_2,
     expected_output: 7380
 };
+
+export const challenge_6: Challenge = {
+    description: "Day 6 Challenge: find the number of unique locations the moving guard has visited",
+    input_file_name: '6_input.txt',
+    input_parser: Parsers.challenge_6,
+    first_line_parsed: "........#...#..................#.#............#....#....##.........#.............................................#................".split(''),
+    challenge_solver: Solvers.challenge_6,
+    expected_output: 4967
+};
+
+export const challenge_6_2: Challenge = {
+    input_file_name: '6_input.txt',
+    description: "Example Day 6 Part 2 Challenge: find the number of obstructions that would cause a cycle to occur",
+    input_parser: Parsers.challenge_6,
+    first_line_parsed: "........#...#..................#.#............#....#....##.........#.............................................#................".split(''),
+    challenge_solver: Solvers.challenge_6_2,
+    expected_output: 1789
+};
