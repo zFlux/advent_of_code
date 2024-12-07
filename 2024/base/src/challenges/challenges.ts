@@ -109,3 +109,21 @@ export const challenge_6_2: Challenge = {
     challenge_solver: Solvers.challenge_6_2,
     expected_output: 1789
 };
+
+export const challenge_7: Challenge = {
+    input_file_name: '7_input.txt',
+    description: "Example Day 7 Challenge: check if the result can be a result of a calculation with the given numbers",
+    input_parser: Parsers.challenge_7,
+    first_line_parsed: [54753537, [2, 35, 2, 5, 5, 9, 1, 17, 367, 73]],
+    challenge_solver: Solvers.challenge_7,
+    expected_output: 663613490587
+};
+
+export const challenge_7_2: Challenge = {
+    input_file_name: '7_input.txt',
+    description: "Example Day 7 Part 2 Challenge: check if the result can be a result of a calculation with the given numbers",
+    input_parser: Parsers.challenge_7,
+    first_line_parsed: [54753537, [2, 35, 2, 5, 5, 9, 1, 17, 367, 73]],
+    challenge_solver: Solvers.challenge_7_2,
+    expected_output: 110365987435001
+};
