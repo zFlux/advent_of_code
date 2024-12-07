@@ -5,7 +5,6 @@ import {
     multiply_by_frequency_and_sum,
     sub_lists,
     check_list,
-    check_list_v2,
     is_safe,
     abs_diff_between_1_and_3,
 } from '../utils/utils';
