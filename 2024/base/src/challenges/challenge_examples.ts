@@ -100,3 +100,21 @@ export const challenge_5_2_example: Challenge = {
     challenge_solver: Solvers.challenge_5_2,
     expected_output: 123
 };
+
+export const challenge_6_example: Challenge = {
+    input_file_name: '6_example.input.txt',
+    description: "Example Day 6 Challenge: find the number of unique characters in a string",
+    input_parser: Parsers.challenge_6,
+    first_line_parsed: [".",".",".",".","#",".",".",".",".",".",],
+    challenge_solver: Solvers.challenge_6,
+    expected_output: 41
+};
+
+export const challenge_6_2_example: Challenge = {
+    input_file_name: '6_example.input.txt',
+    description: "Example Day 6 Part 2 Challenge: find the number of obstructions that would cause a cycle to occur",
+    input_parser: Parsers.challenge_6,
+    first_line_parsed: [".",".",".",".","#",".",".",".",".",".",],
+    challenge_solver: Solvers.challenge_6_2,
+    expected_output: 6
+};
