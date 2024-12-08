@@ -14,12 +14,12 @@ for (let i = 0; i < challenges.length; i++) {
   // create a context for the test
   describe(`${challenge.description}`, () => {
     test('should parse the first line as expected', () => {
-      const firstLine = parseFirstLine(challenge.input_file_name, challenge.input_parser);
+      const firstLine = parseFirstLine(challenge.input_file_directory, challenge.input_file_name, challenge.input_parser);
       expect(firstLine).toEqual(challenge.first_line_parsed);
     });
 
     test('should return the expected solution', () => {
-      const input = parseInput(challenge.input_file_name, challenge.input_parser);
+      const input = parseInput(challenge.input_file_directory, challenge.input_file_name, challenge.input_parser);
       expect(challenge.challenge_solver(input)).toStrictEqual(challenge.expected_output);
     });
   });
