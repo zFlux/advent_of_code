@@ -1,11 +1,13 @@
-import * as AOC_Challenges from '../challenges/challenges';
-import * as AOC_Challenge_Examples from '../challenges/challenge_examples';
+import { all_challenges, filter_challenges } from '../challenges/challenges';
+import { all_challenge_examples } from '../challenges/challenge_examples';
 import { Challenge } from '../types/challenge_types';
 import { parseFirstLine, parseInput } from '../utils/input_parser';
 
 // make a list of functions for every function in a namespace
 let examples_only: boolean = false;
-let challenges: Challenge[] = convertChallengesModuleToList(examples_only);
+let todays_challenges_only: boolean = true;
+
+let challenges: Challenge[] = filter_challenges(examples_only, todays_challenges_only, all_challenges, all_challenge_examples);
 
 // iterate from 0 to the number of challenges and execute each
 for (let i = 0; i < challenges.length; i++) {
@@ -23,31 +25,5 @@ for (let i = 0; i < challenges.length; i++) {
       expect(challenge.challenge_solver(input)).toStrictEqual(challenge.expected_output);
     });
   });
-}
-
-function convertChallengesModuleToList(examples_only: boolean): Challenge[] {
-  const challenges: Challenge[] = [];
-
-  // Put all the examples first
-  for (const challenge in AOC_Challenge_Examples) {
-    const property = (AOC_Challenge_Examples as Record<string, any>)[challenge];
-    if (typeof property === 'object') {
-      challenges.push(property);
-    }
-  }
-  
-  // Add in all the actual challenges if we're not just looking for examples
-  if (!examples_only) {
-    for (const challenge in AOC_Challenges) {
-      const property = (AOC_Challenges as Record<string, any>)[challenge];
-      if (typeof property === 'object') {
-        challenges.push(property);
-      }
-    }
-  }
-
-  return challenges;
-}
-
-
+};
 
