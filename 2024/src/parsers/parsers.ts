@@ -52,3 +52,7 @@ export const challenge_7 = (line: string): (number | number[])[] => {
     return [first, rest];
 }
 
+export const challenge_8 = (line: string): string[] => {
+    return line.split('');
+}
+

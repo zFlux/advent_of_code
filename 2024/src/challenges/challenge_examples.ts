@@ -7,6 +7,7 @@ import { challenge_4_example, challenge_4_2_example } from './day_4';
 import { challenge_5_example, challenge_5_2_example } from './day_5';
 import { challenge_6_example, challenge_6_2_example } from './day_6';
 import { challenge_7_example, challenge_7_2_example } from './day_7';
+import { challenge_8_example, challenge_8_2_example } from './day_8';
 
 export const all_challenge_examples: Challenge[] = 
     [challenge_1_example, challenge_1_2_example, 
@@ -15,7 +16,8 @@ export const all_challenge_examples: Challenge[] =
     challenge_4_example, challenge_4_2_example, 
     challenge_5_example, challenge_5_2_example, 
     challenge_6_example, challenge_6_2_example, 
-    challenge_7_example, challenge_7_2_example];
+    challenge_7_example, challenge_7_2_example,
+    challenge_8_example, challenge_8_2_example];
 
 
 

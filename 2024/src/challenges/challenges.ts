@@ -7,6 +7,7 @@ import { challenge_4, challenge_4_2 } from './day_4';
 import { challenge_5, challenge_5_2 } from './day_5';
 import { challenge_6, challenge_6_2 } from './day_6';
 import { challenge_7, challenge_7_2 } from './day_7';
+import { challenge_8, challenge_8_2 } from './day_8';
 
 export const all_challenges: Challenge[] = 
     [challenge_1, challenge_1_2, 
@@ -15,7 +16,8 @@ export const all_challenges: Challenge[] =
     challenge_4, challenge_4_2, 
     challenge_5, challenge_5_2, 
     challenge_6, challenge_6_2, 
-    challenge_7, challenge_7_2];
+    challenge_7, challenge_7_2,
+    challenge_8, challenge_8_2];
 
 
  export const filter_challenges = (examples_only: boolean, todays_challenges_only: boolean, all_challenges: Challenge[], all_challenge_examples: Challenge[]): Challenge[] => {
