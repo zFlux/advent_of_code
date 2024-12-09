@@ -1,6 +1,6 @@
 import { Challenge } from '../types/challenge_types';
 import * as Parsers from '../parsers/parsers';
-import * as Solvers from '../solvers/solvers';
+import solvers from '../solvers/solvers';
 
 export const challenge_6_example: Challenge = {
     description: "Example Day 6 Challenge: find the number of unique characters in a string",
@@ -8,7 +8,7 @@ export const challenge_6_example: Challenge = {
     input_file_name: '6_example.input.txt',
     input_parser: Parsers.challenge_6,
     first_line_parsed: [".",".",".",".","#",".",".",".",".",".",],
-    challenge_solver: Solvers.challenge_6,
+    challenge_solver: solvers['challenge_6'],
     expected_output: 41
 };
 
@@ -18,7 +18,7 @@ export const challenge_6: Challenge = {
     input_file_name: '6_input.txt',
     input_parser: Parsers.challenge_6,
     first_line_parsed: "........#...#..................#.#............#....#....##.........#.............................................#................".split(''),
-    challenge_solver: Solvers.challenge_6,
+    challenge_solver: solvers['challenge_6'],
     expected_output: 4967
 };
 
@@ -28,7 +28,7 @@ export const challenge_6_2_example: Challenge = {
     input_file_name: '6_example.input.txt',
     input_parser: Parsers.challenge_6,
     first_line_parsed: [".",".",".",".","#",".",".",".",".",".",],
-    challenge_solver: Solvers.challenge_6_2,
+    challenge_solver: solvers['challenge_6_2'],
     expected_output: 6
 };
 
@@ -38,6 +38,6 @@ export const challenge_6_2: Challenge = {
     input_file_name: '6_input.txt',
     input_parser: Parsers.challenge_6,
     first_line_parsed: "........#...#..................#.#............#....#....##.........#.............................................#................".split(''),
-    challenge_solver: Solvers.challenge_6_2,
+    challenge_solver: solvers['challenge_6_2'],
     expected_output: 1789
 };

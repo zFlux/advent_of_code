@@ -1,6 +1,6 @@
 import { Challenge } from '../types/challenge_types';
 import * as Parsers from '../parsers/parsers';
-import * as Solvers from '../solvers/solvers';
+import solvers from '../solvers/solvers';
 
 
 export const challenge_1_example: Challenge = {
@@ -9,7 +9,7 @@ export const challenge_1_example: Challenge = {
     input_file_directory: 'day1',
     input_parser: Parsers.challenge_1,
     first_line_parsed: [3, 4],
-    challenge_solver: Solvers.challenge_1,
+    challenge_solver: solvers['challenge_1'],
     expected_output: 11
 };
 
@@ -19,7 +19,7 @@ export const challenge_1: Challenge = {
     input_file_directory: 'day1',
     input_parser: Parsers.challenge_1,
     first_line_parsed: [98415, 86712],
-    challenge_solver: Solvers.challenge_1,
+    challenge_solver: solvers['challenge_1'],
     expected_output: 2192892
 };
 
@@ -29,7 +29,7 @@ export const challenge_1_2_example: Challenge = {
     input_file_directory: 'day1',
     input_parser: Parsers.challenge_1,
     first_line_parsed: [3, 4],
-    challenge_solver: Solvers.challenge_1_2,
+    challenge_solver: solvers['challenge_1_2'],
     expected_output: 31
 };
 
@@ -39,6 +39,6 @@ export const challenge_1_2: Challenge = {
     input_file_directory: 'day1',
     input_parser: Parsers.challenge_1,
     first_line_parsed: [98415, 86712],
-    challenge_solver: Solvers.challenge_1_2,
+    challenge_solver: solvers['challenge_1_2'],
     expected_output: 22962826
 };

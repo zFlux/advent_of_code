@@ -1,11 +1,10 @@
-import { all_challenges, filter_challenges } from '../challenges/challenges';
-import { all_challenge_examples } from '../challenges/challenge_examples';
+import { all_challenges, all_challenge_examples, filter_challenges } from '../challenges/challenges';
 import { Challenge } from '../types/challenge_types';
 import { parseFirstLine, parseInput } from '../utils/input_parser';
 
 // make a list of functions for every function in a namespace
 let examples_only: boolean = false;
-let todays_challenges_only: boolean = true;
+let todays_challenges_only: boolean = false;
 
 let challenges: Challenge[] = filter_challenges(examples_only, todays_challenges_only, all_challenges, all_challenge_examples);
 

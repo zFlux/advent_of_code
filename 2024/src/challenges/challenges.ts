@@ -1,55 +1,65 @@
 import { Challenge } from '../types/challenge_types';
 
-import { challenge_1, challenge_1_2 } from './day_1';
-import { challenge_2, challenge_2_2 } from './day_2';
-import { challenge_3, challenge_3_2 } from './day_3';
-import { challenge_4, challenge_4_2 } from './day_4';
-import { challenge_5, challenge_5_2 } from './day_5';
-import { challenge_6, challenge_6_2 } from './day_6';
-import { challenge_7, challenge_7_2 } from './day_7';
-import { challenge_8, challenge_8_2 } from './day_8';
+import * as Day1 from './day_1';
+import * as Day2 from './day_2';
+import * as Day3 from './day_3';
+import * as Day4 from './day_4';
+import * as Day5 from './day_5';
+import * as Day6 from './day_6';
+import * as Day7 from './day_7';
+import * as Day8 from './day_8';
 
-export const all_challenges: Challenge[] = 
-    [challenge_1, challenge_1_2, 
-    challenge_2, challenge_2_2, 
-    challenge_3, challenge_3_2, 
-    challenge_4, challenge_4_2, 
-    challenge_5, challenge_5_2, 
-    challenge_6, challenge_6_2, 
-    challenge_7, challenge_7_2,
-    challenge_8, challenge_8_2];
+const module_list = [Day1, Day2, Day3, Day4, Day5, Day6, Day7, Day8];
 
+const LOAD_EXAMPLE_FUNCTIONS_THAT_END_WITH = '_example';
+const LOAD_CHALLENGE_FUNCTIONS_THAT_LOOK_LIKE = /^challenge_\d+$/;
 
- export const filter_challenges = (examples_only: boolean, todays_challenges_only: boolean, all_challenges: Challenge[], all_challenge_examples: Challenge[]): Challenge[] => {
+let challenge_examples: Challenge[] = [];
+let challenges: Challenge[] = [];
+module_list.forEach((module) => {
+    Object.entries(module).forEach(([name, func]) => {
+        if (name.endsWith(LOAD_EXAMPLE_FUNCTIONS_THAT_END_WITH) && typeof func === 'object') {
+            challenge_examples.push(func);
+        } else if (LOAD_CHALLENGE_FUNCTIONS_THAT_LOOK_LIKE.test(name) && typeof func === 'object') {
+            challenges.push(func);
+        }
+    });
+});
+
+export const filter_challenges = (examples_only: boolean, todays_challenges_only: boolean, all_challenges: Challenge[], all_challenge_examples: Challenge[]): Challenge[] => {
     let challenges: Challenge[] = [];
-    
+
     if (examples_only) {
         challenges = all_challenge_examples;
     } else {
         challenges = all_challenge_examples.concat(all_challenges);
     }
-    
+
     if (todays_challenges_only) {
         // search all the challenges and grab all the input file directories, pull off the number appearing at the
         // end of the directory name, and return the challenges having a directory "day##" where ## is the highest number
         // in the directories
         let highest_day = 0;
         challenges.forEach((challenge) => {
-        const day = parseInt(challenge.input_file_directory.replace('day', ''));
-        if (day > highest_day) {
-            highest_day = day;
-        }
+            const day = parseInt(challenge.input_file_directory.replace('day', ''));
+            if (day > highest_day) {
+                highest_day = day;
+            }
         });
-    
+
         challenges = challenges.filter((challenge) => {
-        const day = parseInt(challenge.input_file_directory.replace('day', ''));
-        return day === highest_day;
+            const day = parseInt(challenge.input_file_directory.replace('day', ''));
+            return day === highest_day;
         });
-    }
-    
-    return challenges;
+     }
+
+        return challenges;
 };
-    
+
+export const all_challenge_examples: Challenge[] = challenge_examples;
+export const all_challenges: Challenge[] = challenges;
+
+
 
 
 
