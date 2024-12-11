@@ -6,8 +6,9 @@ import * as Day5 from "./day_5";
 import * as Day6 from "./day_6";
 import * as Day7 from "./day_7";
 import * as Day8 from "./day_8";
+import * as Day9 from "./day_9";
 
-const module_list = [Day1, Day2, Day3, Day4, Day5, Day6, Day7, Day8];
+const module_list = [Day1, Day2, Day3, Day4, Day5, Day6, Day7, Day8, Day9];
 
 let solvers: { [key: string]: (input: any) => any } = {};
 

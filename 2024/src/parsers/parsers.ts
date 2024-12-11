@@ -56,3 +56,7 @@ export const challenge_8 = (line: string): string[] => {
     return line.split('');
 }
 
+export const challenge_9 = (line: string): number[] => {
+    return line.split('').map((num: string) => parseInt(num));
+}
+
