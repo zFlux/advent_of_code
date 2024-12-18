@@ -4,7 +4,7 @@ import { parseFirstLine, parseInput } from '../utils/input_parser';
 
 // make a list of functions for every function in a namespace
 let examples_only: boolean = false;
-let todays_challenges_only: boolean = false;
+let todays_challenges_only: boolean = true;
 
 let challenges: Challenge[] = filter_challenges(examples_only, todays_challenges_only, all_challenges, all_challenge_examples);
 

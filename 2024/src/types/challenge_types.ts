@@ -7,3 +7,15 @@ export interface Challenge {
     challenge_solver: (input: any) => any;
     expected_output: any;
 }
+
+export type Space = {
+    id: number;
+    size: number;
+    position: number;
+};
+
+export type File = {
+    id: number;
+    size: number;
+    position: number;
+};

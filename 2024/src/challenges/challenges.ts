@@ -9,8 +9,9 @@ import * as Day6 from './day_6';
 import * as Day7 from './day_7';
 import * as Day8 from './day_8';
 import * as Day9 from './day_9';
+import * as Day10 from './day_10';
 
-const module_list = [Day1, Day2, Day3, Day4, Day5, Day6, Day7, Day8, Day9];
+const module_list = [Day1, Day2, Day3, Day4, Day5, Day6, Day7, Day8, Day9, Day10];
 
 const LOAD_EXAMPLE_FUNCTIONS_THAT_END_WITH = '_example';
 // create a regex that matches challenge_##_## where the second _## is not necessary

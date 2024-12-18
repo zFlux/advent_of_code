@@ -2,6 +2,10 @@ const parse_into_array_of_numbers = (line: string): number[] => {
     return line.split(/\s+/).map((num: string) => parseInt(num));
 }
 
+const parse_into_array_of_strings = (line: string): string[] => {
+    return line.split('');
+}
+
 export const challenge_1 = (line: string): number[] => {
     return parse_into_array_of_numbers(line);
 }
@@ -57,6 +61,14 @@ export const challenge_8 = (line: string): string[] => {
 }
 
 export const challenge_9 = (line: string): number[] => {
+    return line.split('').map((num: string) => parseInt(num));
+};
+
+export const challenge_10 = (line: string): string[] => {
+    return parse_into_array_of_strings(line);
+};
+
+export const challenge_10_2 = (line: string): number[] => {
     return line.split('').map((num: string) => parseInt(num));
 }
 
