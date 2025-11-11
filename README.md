@@ -31,3 +31,6 @@
 ## 2023
 - Day 1 - 18: Ruby
 
+## 2024
+- Day 1 - 10: Typescript
+
